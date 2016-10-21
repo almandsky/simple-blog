@@ -1,20 +1,9 @@
 import { computed, observable } from "mobx"
 import axios from "axios";
 import querystring from "querystring";
+import Blog from "./Blog";
 
-class Blog {
-  @observable id;
-  @observable text;
-  @observable timestamp;
-  @observable title;
-
-  constructor(playload) {
-    this.id = playload.id;
-    this.text = playload.text;
-    this.timestamp = playload.timestamp;
-    this.title = playload.title;
-  }
-}
+const baseUrl = 'http://rest.learncode.academy/api/almandsky/blogs/';
 
 export class BlogStore {
   @observable blogs = []
@@ -26,10 +15,9 @@ export class BlogStore {
   getBlogs() {
     const self = this;
     
-    const getBlogsUrl = `http://restedblog.herokuapp.com/spartz/api/`;
+    const getBlogsUrl = `${baseUrl}`;
     axios.get(getBlogsUrl)
     .then(function (response) {
-      console.log(response);
       self.blogs = [];
       const results = response.data;
       for (let i = 0; i < results.length; i++) {
@@ -47,7 +35,7 @@ export class BlogStore {
   deleteBlog(blog) {
     const self = this;
     
-    const deleteBlogUrl = `http://restedblog.herokuapp.com/spartz/api/${blog.id}`;
+    const deleteBlogUrl = `${baseUrl}${blog.id}`;
     axios.delete(deleteBlogUrl)
     .then(function (response) {
       const deletedPos = self.blogs.indexOf(blog);
@@ -63,7 +51,7 @@ export class BlogStore {
 
   createBlog(title, text) {
     const self = this;
-    const createBlogUrl = `http://restedblog.herokuapp.com/spartz/api/`;
+    const createBlogUrl = `${baseUrl}`;
     // TODO: May need more defesive checking for the input title and text to prevent XSS
     axios.post(createBlogUrl, querystring.stringify({
             title: title,
@@ -83,16 +71,19 @@ export class BlogStore {
 
   updateBlog(oldBlog, title, text) {
     const self = this;
-    const updateBlogUrl = `http://restedblog.herokuapp.com/spartz/api/${oldBlog.id}`;
+    const updateBlogUrl = `${baseUrl}${oldBlog.id}`;
     // TODO: May need more defesive checking for the input title and text to prevent XSS
-    axios.post(updateBlogUrl, querystring.stringify({
+    axios.put(updateBlogUrl, {
       title: title,
       text: text
-    }))
+    })
     .then(function (response) {
-
-      const result = response.data;
-      const newBlog = new Blog(result);
+      const newBlog = new Blog({
+        id: oldBlog.id,
+        title: title,
+        text: text,
+        timestamp: oldBlog.timestamp
+      });
 
       const updatePos = self.blogs.indexOf(oldBlog);
       if (updatePos >= 0) {

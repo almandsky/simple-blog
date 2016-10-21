@@ -49,9 +49,6 @@ export default class BlogList extends React.Component {
     const self = this;
     const inputTitle = this.refs.inputtitle.value;
     const inputText = this.refs.inputtext.value;
-    console.log('I am clicked! title is ' + inputTitle);
-    console.log('text is ' + inputText);
-    console.log('editmode is ' + self.state.editmode);
     
     if (!inputTitle || !inputText) {
       //TODO: will add more error handling for the input error and show it here
@@ -77,7 +74,6 @@ export default class BlogList extends React.Component {
   }
 
   editPost(blog) {
-    console.log('editing blog ' + blog.title);
     this.refs.inputtitle.value = blog.title;
     this.refs.inputtext.value = blog.text;
     this.setState({
@@ -88,7 +84,6 @@ export default class BlogList extends React.Component {
   }
 
   deletePost(blog) {
-    console.log('deleting blog ' + blog.title);
     let r = confirm("Do you really want to delete the post?");
     if (r == true) {
         // remove the blog post
@@ -198,7 +193,7 @@ export default class BlogList extends React.Component {
     const blogDetailList = blogs.map(blog => (
       <div key={blog.id} className="blog-list-content">
         <div>
-        <h2>{blog.title}</h2>
+        <h3>{blog.title}</h3>
         <p>{blog.text}</p>
         </div>
         <div>
