@@ -146,3 +146,11 @@ html, body {
 .js-menu-show {
   margin-top: 15px;
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
