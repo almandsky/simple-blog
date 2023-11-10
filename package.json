@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/almandsky/simple-blog#readme",
   "dependencies": {
-    "axios": "0.18.1",
+    "axios": "1.6.0",
     "chai": "4.2.0",
     "jsdom": "9.8.0",
     "mobx": "4.15.1",
